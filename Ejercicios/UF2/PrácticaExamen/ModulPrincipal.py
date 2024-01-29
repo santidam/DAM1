@@ -15,7 +15,7 @@ def main():
         comanda = input("> ").lower()
         comandaFinal = comanda.split("-")
         if comanda == "quit":
-
+            print("Cerrando programa...")
             salir = True
         elif len(comandaFinal) >= 1 and comandaFinal[0] in comandaLista:
             if len(comandaFinal) == comandaLista[comandaFinal[0]]:
@@ -28,4 +28,6 @@ def main():
 
 pruebaAdd = "addLlibre-1234ab-Título1-Autor1-Acción-5"
 pruebaStart = "startprestec-1234ab-Pepe-29/01/2024"
+pruebaPrestamo = "endprestec-1234ab-30/01/2024"
+pruebaPrestamo2 = "endprestec-1234ab-25/02/2024"
 main()

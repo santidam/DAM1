@@ -4,7 +4,8 @@
 from datetime import datetime
 
 diccLibros = {}  # diccionario de libros
-diccAlumnos = {}  # diccionarios de alumnos con prestamos
+diccPrestamos = {}  # diccionarios de alumnos con prestamos
+diccIncidiencias = {}
 
 
 def diccLibrosStart(listaComanda):
@@ -20,27 +21,77 @@ def diccLibrosStart(listaComanda):
 def startPrestec(listaComanda, fechaInicio, fechaFinal):
     """Esta función módificara la disponibilidad de los libros añadiendo la fecha de inicio del prestamo y de la finalización que
         será 15 días despues"""
-    # if listaComanda[1] not in diccLibros:
-    #     return f"Error, el libro con el código {listaComanda[1]} no existe"
-    # else:
-    # if diccLibros[listaComanda[1]]["disponibilitat"] == False:
 
-    diccAlumnos[listaComanda[2]] = {
-        "codigo": listaComanda[1], "fecha prestamo": fechaInicio, "fecha entrega": fechaFinal}
+
+    diccPrestamos[listaComanda[1]] = {
+        "Alumno": listaComanda[2], "fecha prestamo": fechaInicio, "fecha entrega": fechaFinal}
     diccLibros[listaComanda[1]]["disponibilitat"] = False
 
     return f"Prestamo realizado. El libro se debe entregar el {fechaFinal}"
+
+def endPrestec(codigo):
+    """Esta función finaliza un préstamo que haya sido entregado en un tiempo dentro del rango del prestamo, cambiando la disponiblidad del libro y quitando el libro
+        del diccionario de Prestamos"""
+    diccLibros[codigo]["disponibilitat"] =  True
+    diccPrestamos[codigo] = {}
+    print("Devolución procesada correctamente")
+
+def Incidencia(codigo, fechaEntrega ):
+    """Esta función registra las incidencias de los usuarios accediendo a los datos del
+        diccionario de Prestamos con el codigo de entrada de la función"""
+
+    nombre = diccPrestamos[codigo]["Alumno"]
+    fechaPrestamo = diccPrestamos[codigo]["fecha prestamo"]
+    fechaDevolucion = diccPrestamos[codigo]["fecha entrega"]
+    if nombre not in diccIncidiencias:
+        print("El usario no tiene incidencias previas... Generando nueva incidencia")
+        diccIncidiencias[nombre] = [{"codigo": codigo, "fecha prestamo": fechaPrestamo, "fecha devolucion": fechaDevolucion, "fecha entrega": fechaEntrega}]
+        endPrestec(codigo)
+        print(diccIncidiencias)
+    else:
+        print("El usario tiene incidencias previas... Generando nueva incidencia")
+        diccIncidiencias[nombre].append({"codigo": codigo, "fecha prestamo": fechaPrestamo, "fecha devolucion": fechaDevolucion, "fecha entrega": fechaEntrega})
+        endPrestec(codigo)
+        print(diccIncidiencias)
+        
+
 
 
 def disponibilidad(codigo):
     """Esta función analiza la disponibilidad de los libros para sus prestamos"""
     if codigo not in diccLibros:
-        return f"Error, el libro con el código {codigo} no existe"
+        print(f"Error, el libro con el código {codigo} no existe")
+        return None
     else:
         if diccLibros[codigo]["disponibilitat"] == True:
             return True
         else:
+            # print(f"Error, el libro con el codigo {codigo} no se encuentra disponible")
             return False
+
+def fechaRetorno(codigo, fechaSalida):
+    """esta función validará la fecha de entrega de los prestamos
+        confirmando que la fecha de entrega es posterior a lña de entrada"""
+    # codigo = listaComanda[1]
+    fechaDevolucion = datetime.strptime(diccPrestamos[codigo]["fecha entrega"], "%Y/%m/%d")
+    fechaEntrada = datetime.strptime(diccPrestamos[codigo]["fecha prestamo"], "%Y/%m/%d")
+    fechaEntrega = datetime.strptime(fechaSalida, "%Y/%m/%d")
+
+    if fechaEntrada < fechaEntrega:
+        if fechaEntrega <= fechaDevolucion:
+            print("Libro entregado en plazo. Procesando devolución...")
+            return True
+        else:
+            print("El libro ha sido devuelto con retraso. Abriendo incidencia...  ")
+            return False
+    else:
+        print("Error, la fecha de devolución debe ser posterior a la del prestamo")
+
+
+
+# def fechaDevulición(fechaSalida, fechaRetorno):
+    
+
 
 
 # prueba = ["addLlibre","1234ab","pepe","Pedro","accion0","16"]
