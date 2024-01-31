@@ -20,7 +20,7 @@ def diccLibrosStart(listaComanda):
 
 def startPrestec(listaComanda, fechaInicio, fechaFinal):
     """Esta función módificara la disponibilidad de los libros añadiendo la fecha de inicio del prestamo y de la finalización que
-        será 15 días despues"""
+        será 15 días despues, agregando esta informacion en el diccionario de Prestamos y de Libros"""
 
 
     diccPrestamos[listaComanda[1]] = {
@@ -33,7 +33,7 @@ def endPrestec(codigo):
     """Esta función finaliza un préstamo que haya sido entregado en un tiempo dentro del rango del prestamo, cambiando la disponiblidad del libro y quitando el libro
         del diccionario de Prestamos"""
     diccLibros[codigo]["disponibilitat"] =  True
-    diccPrestamos[codigo] = {}
+    del diccPrestamos[codigo]
     print("Devolución procesada correctamente")
 
 def Incidencia(codigo, fechaEntrega ):
@@ -53,9 +53,82 @@ def Incidencia(codigo, fechaEntrega ):
         diccIncidiencias[nombre].append({"codigo": codigo, "fecha prestamo": fechaPrestamo, "fecha devolucion": fechaDevolucion, "fecha entrega": fechaEntrega})
         endPrestec(codigo)
         print(diccIncidiencias)
+
+def List(tipo, genero):
+    """Esta función genera una lista de los diccionarios según la entrada proporcionada, siendo el primer parámetro introducido
+        el que determina que lista mostrará, y el segundo, solo es necesario para la lista genero. """
+    if tipo == "llibres":
+        for x in diccLibros:
+            print(x,":", diccLibros[x]["titulo"],",", diccLibros[x]["autor"],"- ESTAT:", diccLibros[x]["disponibilitat"])
+    elif tipo == "prestec":
+        if not diccPrestamos:
+            print("Actualmente no hay libros en prestamo")
+        else:
+            for x in diccPrestamos:
+                print("Llibre:",x,": Alumne:", diccPrestamos[x]["Alumno"],"Data inici:", diccPrestamos[x]["fecha prestamo"],"Data fi:", diccPrestamos[x]["fecha entrega"])
+
+    elif tipo == "genere":
+        contadorGenero = 0
+        for x in diccLibros:
+            if diccLibros[x]["genero"] == genero:
+                contadorGenero += 1
+                print(x,":", diccLibros[x]["titulo"],",", diccLibros[x]["autor"],"- ESTAT:", diccLibros[x]["disponibilitat"])
+        if contadorGenero == 0:
+            print("Error, no existen libros del genero seleciconado")
+def maxllibre():
+    "Esta función analiza las páginas de los libros que se encuentran en el diciconario de Libros y determina cúal tiene más páginas"
+    
+    contador = 0
+    max = None
+    for x in diccLibros:
+        if int(diccLibros[x]["paginas"]) > contador:
+            contador = int(diccLibros[x]["paginas"])
+            max = x
+    print("El llibre amb més pàgines de la biblioteca és:",diccLibros[max]["titulo"],f" amb {contador} pàgines")
+
+def stats():
+    """esta función estudia la cantidad de libros en la biblioteca, la cantidad de incidencias y la media de las páginas de todos los libros"""
+    contadorLibros = len(diccLibros)
+    contadorIncidencias = 0
+    contadorPáginas = 0
+
+    for x in diccLibros:
+        contadorPáginas += int(diccLibros[x]["paginas"])
+    for x in diccIncidiencias:
+        contadorIncidencias += len(diccIncidiencias[x])
+
+    print(f"Número de llibres registrats: {contadorLibros}")
+    print(f"Número d'incidències registrades:{contadorIncidencias}")
+    print(f"Mitjana de pàgines per llibre: {contadorPáginas/contadorLibros}")        
+
+def info(nombre):
+    """Esta función proporciona datos relativos a los prestamos y incidencias del nombre proporcionado en la base de datos"""
+    
+    print("Llibres en préstec")
+    contadorPrestamo = 0
+    for x in diccPrestamos:
+        if diccPrestamos[x]["Alumno"] == nombre:
+            contadorPrestamo += 1
+            print("Llibre:", x,"- ",diccLibros[x]["titulo"], "Inici:", diccPrestamos[x]["fecha prestamo"], "Data fi:",diccPrestamos[x]["fecha entrega"])
+    if contadorPrestamo == 0:
+        print("L'alumne indicat no té cap llibre en préstec.")
+    print("Incidencias:")
+
+    if nombre not in diccIncidiencias:
+        print(f"El alumno { nombre} no tiene incidencias registradas")
+    else:
         
+        for i in range(len(diccIncidiencias["pepe"])):
+            print("Llibre:", diccIncidiencias["pepe"][i]["codigo"]," Data Inici Préstec:", diccIncidiencias["pepe"][i]["fecha prestamo"], "Data Fi:", diccIncidiencias["pepe"][i]["fecha devolucion"], "Data Retorn:", diccIncidiencias["pepe"][i]["fecha entrega"])
+        # print(f"El alumno tiene {len(diccIncidiencias[nombre])}")
 
-
+def validarDiccLibros():
+    """Esta funcion determina la existencia de elementos en el diccionario principal de libros
+        y devuelve un Booleano para cada situación"""
+    if not diccLibros:
+        print("Error, no existen libros en la base de datos")
+        return False
+    return True
 
 def disponibilidad(codigo):
     """Esta función analiza la disponibilidad de los libros para sus prestamos"""
@@ -71,13 +144,13 @@ def disponibilidad(codigo):
 
 def fechaRetorno(codigo, fechaSalida):
     """esta función validará la fecha de entrega de los prestamos
-        confirmando que la fecha de entrega es posterior a lña de entrada"""
+        confirmando que la fecha de entrega es posterior a la de entrada"""
     # codigo = listaComanda[1]
     fechaDevolucion = datetime.strptime(diccPrestamos[codigo]["fecha entrega"], "%Y/%m/%d")
     fechaEntrada = datetime.strptime(diccPrestamos[codigo]["fecha prestamo"], "%Y/%m/%d")
     fechaEntrega = datetime.strptime(fechaSalida, "%Y/%m/%d")
 
-    if fechaEntrada < fechaEntrega:
+    if fechaEntrada <= fechaEntrega:
         if fechaEntrega <= fechaDevolucion:
             print("Libro entregado en plazo. Procesando devolución...")
             return True
@@ -107,3 +180,14 @@ def fechaRetorno(codigo, fechaSalida):
 # print(startPrestec(pruebaPrestamo2))
 
 # print(diccLibros)
+
+# diccLibros = {"001":{"titulo": "Titulo1", "autor": "Autor1","genero": "genero1", "paginas": 600, "disponibilitat": False, "fechaEntrega": "2024/02/13"}, 
+#               "002": {"titulo": "Titulo1", "autor": "Autor1","genero": "genero1", "paginas": 400, "disponibilitat": False, "fechaEntrega": "2024/02/13"},
+#               "003": {"titulo": "Titulo1", "autor": "Autor1","genero": "genero2", "paginas": 300, "disponibilitat": False, "fechaEntrega": "2024/02/13"},
+#                "004": {"titulo": "Titulo1", "autor": "Autor1","genero": "genero2", "paginas": 550, "disponibilitat": True, "fechaEntrega": None}}
+# diccPrestamos = {"001":{"Alumno": "alumno1", "fecha prestamo": "2024/01/30","fecha entrega": "2024/02/13"}, 
+#               "002": {"Alumno": "alumno2", "fecha prestamo": "2024/01/30","fecha entrega": "2024/02/13"},
+#               "003": {"Alumno": "alumno3", "fecha prestamo": "2024/01/30","fecha entrega": "2024/02/13"}}
+List("llibres", "no")
+List("prestec", "no")
+print(len(diccLibros))

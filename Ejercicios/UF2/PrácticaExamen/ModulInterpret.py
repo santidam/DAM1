@@ -1,10 +1,11 @@
-# En este módulo interprete se ejecturan las funciones que se llevaran a cabo en el módulo principal, procesando losdatos y también
+# En este módulo interprete se ejecturan las funciones que se llevaran a cabo en el módulo principal, procesando los datos y también
 # se accederá a la base de datos del programa a traves del módulo bliblioteca.
+
 from datetime import datetime, timedelta
 import ModulBiblioteca as mb
 
 
-def validarLenComando(comanda):
+def validarComando(comanda):
     """Esta funcion analiza  el comando introducido por el usuario y lo conecta con la función necesaria
         para su ejecución si cumple el criterio de entrada"""
 
@@ -31,7 +32,24 @@ def validarLenComando(comanda):
                 mb.endPrestec(comanda[1])
             elif fechaRetorno == False:
                 mb.Incidencia(comanda[1], x)
-    #elif comanda[0] == "listllibres":
+    elif comanda[0] == "listllibres":
+        if mb.validarDiccLibros() == True:
+            mb.List("llibres", "no")
+    elif comanda[0] == "listprestecs":
+        if mb.validarDiccLibros() == True:
+            mb.List("prestec", "no")
+    elif comanda[0] == "listgenere":
+        if mb.validarDiccLibros() == True:
+            mb.List("genere", comanda[1])
+    elif comanda[0] == "maxllibre":
+        if mb.validarDiccLibros() == True:
+            mb.maxllibre()
+    elif comanda[0] == "stats":
+        if mb.validarDiccLibros() == True:
+            mb.stats()
+    elif comanda[0] == "info":
+        if mb.validarDiccLibros() == True:
+            mb.info(comanda[1])
 
 def entradaFecha(fecha):
     """Esta función analiza la entrada de fechas en formato d/m/a y retorna 
