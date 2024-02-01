@@ -188,6 +188,6 @@ def fechaRetorno(codigo, fechaSalida):
 # diccPrestamos = {"001":{"Alumno": "alumno1", "fecha prestamo": "2024/01/30","fecha entrega": "2024/02/13"}, 
 #               "002": {"Alumno": "alumno2", "fecha prestamo": "2024/01/30","fecha entrega": "2024/02/13"},
 #               "003": {"Alumno": "alumno3", "fecha prestamo": "2024/01/30","fecha entrega": "2024/02/13"}}
-List("llibres", "no")
-List("prestec", "no")
-print(len(diccLibros))
+# List("llibres", "no")
+# List("prestec", "no")
+# print(len(diccLibros))
