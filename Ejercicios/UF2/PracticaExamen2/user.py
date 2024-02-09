@@ -1,3 +1,5 @@
+import dates
+
 diccUsuario = {}
 def DemanarEdat():
     """Esta función pide al usuario una edad y valida que este entre 0 y 130.
@@ -45,7 +47,9 @@ def registrarUsuario(usuario , clave):
     """Esta función registra al usuario en la base de datos"""
     if validarUsuari(usuario, clave) == True:
         edat = DemanarEdat()
-        diccUsuario[usuario] = {"contraseña": clave, "edat": edat }
+        cumpleaños = input("introduce la fecha de tu nacimiento en formato d/m/a")
+        cumpleañosFormato = dates.fechaFormatoDate(cumpleaños)
+        diccUsuario[usuario] = {"contraseña": clave, "edat": edat, "cumpleaños": cumpleañosFormato }
         print("Usuario registrado correctamente")
 
 
@@ -56,3 +60,23 @@ def disponibilidadUsuario(usuari):
         return False
     else:
         return True
+
+def login(usuario, clave):
+    if disponibilidadUsuario(usuario) == True:
+        if diccUsuario[usuario]["constraseña"] == clave:
+            print(f"Bienvenido/a {usuario.capitalize}\n {dates.avui()}")
+            if dates.aniversari(diccUsuario[usuario]["cumpleaños"]) == True:
+                print("Este mes es tu cumpleaños!")
+            else:
+                print("Este mes no es tu cumpleaños")
+            cuantoFalta = dates.cuantFalta(diccUsuario[usuario]["cumpleaños"])
+            if cuantoFalta == False:
+                proximoCumpleaños = dates.properAniversari(diccUsuario[usuario]["cumpleaños"])
+                print(dates.cuantFalta(proximoCumpleaños))
+            elif cuantoFalta == 0:
+                print("Felicidades este mes es tu cumpleaños")
+            else:
+                print(f"Faltan {cuantoFalta} para tu cumpleaños!! ")
+        
+        return False
+    return False

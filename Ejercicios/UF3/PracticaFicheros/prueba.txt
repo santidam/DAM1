@@ -1,0 +1,4 @@
+py main.py afegir habitacio 100 1 45.90
+py main.py afegir habitacio 105 1 45.90
+
+py main.py afegir reserva 105 Aitor Tilla 12345678A 666666666

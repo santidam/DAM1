@@ -47,10 +47,12 @@ def cuantFalta(dataString):
     
     data = fechaFormatoDate(dataString)
     dataToday = datetime.now()
-    if data > dataToday:
+    if data >= dataToday:
         diferencia = data - dataToday
         return diferencia.days
+
     else:
+        return False
         print("Error la fecha proporcionada debe ser posterior a la actual")
 
 def aniversari(dataString):

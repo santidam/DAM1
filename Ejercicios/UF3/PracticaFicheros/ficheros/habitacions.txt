@@ -1,0 +1,9 @@
+105,1,45.9,bruta
+100,1,45.9,bruta
+110,1,10.0,no disponible
+101,1,10.0,disponible
+102,1,10.0,disponible
+103,1,10.0,disponible
+104,1,10.0,disponible
+106,1,10.0,disponible
+107,1,10.0,disponible

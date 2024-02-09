@@ -18,7 +18,9 @@ while salir == False:
         contraseña = input("Introduce una contraseña: ")
         user.registrarUsuario(usuario,contraseña)
 
-    # elif comando == "2":
+    elif comando == "2":
+        usuario = input("Introduce un nombre de usuario: ")
+        contraseña = input("Introduce una contraseña: ")
 
 
     # elif comando == "3":
