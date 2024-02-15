@@ -7,8 +7,8 @@ def validarComando(comanda):
     """Esta funcion analiza  el comando introducido por el usuario y lo conecta con la función necesaria
         para su ejecución si cumple el criterio de entrada"""
 
-    if comanda[0] == "afegir":
-        if comanda[1] == "habitacio" :
+    if comanda[0] == "añadir":
+        if comanda[1] == "habitacion" :
             habitacion = comanda[2]
             capacidad = comanda[3]
             precio = comanda[4]
@@ -16,21 +16,19 @@ def validarComando(comanda):
                 if validar_datos(capacidad, "capacidad") == True:
                     if validar_datos(precio, "precio") == True:
                         h.afegir_habitacio(habitacion,capacidad,precio)
-                        
-                
+          
         elif comanda[1] == "reserva" :
             habitacion = comanda[2]
             nombre = comanda[3]
             apellido = comanda[4]
             dni = comanda[5]
             telefono = comanda[6]
-
             if validar_datos(habitacion, "habitación") == True:
-                if validarDNI(dni) == True and validarTelefono(telefono) == True:
-                    h.afegir_reserva(habitacion, nombre, apellido, dni, telefono)
+                        if validarDNI(dni) == True and validarTelefono(telefono) == True:
+                            h.afegir_reserva(habitacion, nombre, apellido, dni, telefono)
 
 
-    elif comanda[0] == "finalitzar":
+    elif comanda[0] == "finalizar":
        habitacion = comanda[1]
        dias = comanda[2]
        if validar_datos(habitacion, "habitación") == True:
@@ -43,25 +41,31 @@ def validarComando(comanda):
                     dias = int(dias)
                     if dias >= 0:
                         h.finalizar_reserva(habitacion, dias)
-       
 
-    elif comanda[0] == "netejar":
+        
+
+    elif comanda[0] == "limpiar":
         habitacion = comanda[1]
         if validar_datos(habitacion, "habitación") == True:
             h.netejar_habitacion(habitacion)
         
+
     elif comanda[0] == "list":
         h.list()
+
+
     elif comanda[0] == "info":
             dni = comanda[1]
             if validarDNI(dni) == True:
                 h.info_dni(dni)
-    elif comanda[0] == "reserves":
+
+
+    elif comanda[0] == "reservas":
         h.lista_reservas()
 
 
 def validarNumeros(dato):
-    """Esta función valdiará que un dato introducido sea un número retornando booleanos"""
+    """Esta función valdiará que un dato introducido sea un número"""
     if dato.isdigit():
         return True
     else:
@@ -69,7 +73,7 @@ def validarNumeros(dato):
 
 
 def validarMayor0(dato):
-    """Esta función validará que un número sea mayor a 0, retorna booleanos"""
+    """Esta función validará que un número sea mayor a 0"""
 
     if float(dato) > 0:
         return True
@@ -78,7 +82,7 @@ def validarMayor0(dato):
 
 
 def validarDNI(dato):
-    """Esta función validará que un dni tenga 6 caracteres alfanumericos, retorna booleanos"""
+    """Esta función validará que un dni tenga 6 caracteres alfanumericos"""
     if len(dato) == 9:
         return True
     else:
@@ -88,7 +92,7 @@ def validarDNI(dato):
 
 4
 def validarTelefono(dato):
-    """Esta función validará que el telefono introducido sea valido, 6 caracteres y solo números, tras lo cual retorna True o False"""
+    """Esta función validará que el telefono introducido sea valido, 6 caracteres y solo números"""
     if validarNumeros(dato) == True and len(dato) == 9:
         return True
     else:
@@ -106,8 +110,9 @@ def validarFloatNumero(numero):
         else:
             return False
     else:
-        return False
-    
+        return validarNumeros(numero)
+
+
 def validar_negativo(dato):
     """Función para validar si el valor ingresado es negativo retorna True si es negativo y False en caso contrario """
     if dato.count("-") == 1 and dato[0] == "-":
@@ -118,11 +123,9 @@ def validar_negativo(dato):
             return False
     else:
         return False
-    
-
 def validar_datos(dato, tipo ):
-    """Esta función determina si los datos introducidos cumplen el criterio de entrada: dato positivo, numero valido, mayor a 0 y
-        retorna True si los cumple y si no los cumple informa el error"""
+    """Esta función determina si los datos introducidos cumplen el criterio de entrada
+        retorna True si los cumple y si no los cumple señala el error"""
     
     if validar_negativo(dato) == True:
         print(f"Error de {tipo}: el número introducido no puede ser negativo")

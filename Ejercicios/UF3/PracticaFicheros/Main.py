@@ -12,7 +12,7 @@ def main(comandaFinal):
                         "list": 1, "info": 2, "reserves": 1}
 
    
-    if comandaFinal[0] == "afegir":
+    if comandaFinal[0] == "afegir" and len(comandaFinal) > 1:
         if comandaFinal[1] == "habitacio" and len(comandaFinal) == comandaLista["afegir habitacio"]:
              mi.validarComando(comandaFinal)
                 
@@ -20,17 +20,24 @@ def main(comandaFinal):
             mi.validarComando(comandaFinal)
 
         else:
-            print("Error: Número de argumentos incorrecto")
+            print(f"Error en el comando {comandaFinal[0] + ' ' + comandaFinal[1]}: Número de argumentos incorrecto. Debe contener: {comandaLista[comandaFinal[0]+' '+comandaFinal[1]]} argumentos")
                 
     elif len(comandaFinal) > 0 and comandaFinal[0] in comandaLista:
     
         if len(comandaFinal) == comandaLista[comandaFinal[0]]:
             mi.validarComando(comandaFinal)
         else:
-            print("Error: Numero de argumentos incorrecto")
+            print(f"Error en el comando {comandaFinal[0]}: Numero de argumentos incorrecto. Debe contener {comandaLista[comandaFinal[0]]} argumentos")
     else:
-        print("Error al introducir el comando")
+        print("Error al introducir el comando\nIntroduzca un comando valido:")
+        for i, valor in comandaLista.items():
+            print(i,"==> Argumentos:", valor)
+
        
-args = sys.argv
-del args[0]
-main(args)
+args = sys.argv[1:]
+argumentos = []
+
+for i in args:
+    argumentos.append(i.lower())
+    
+main(argumentos)
