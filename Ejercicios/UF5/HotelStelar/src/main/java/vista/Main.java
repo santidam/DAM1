@@ -11,12 +11,10 @@ public class Main {
 
         do {
             if (indiceComando < comandosIniciales.length) {
-                // Procesa cada comando predefinido
                 System.out.println(comandosIniciales[indiceComando]);
                 args = comandosIniciales[indiceComando++].toLowerCase().split(" ");
 
             } else {
-                // Permite al usuario ingresar comandos después de los predefinidos
                 args = input.askString("> ").toLowerCase().split(" ");
             }
 
@@ -60,7 +58,6 @@ public class Main {
                                 salir = true;
                                 break;
                             default:
-                                System.out.println("ERROR. debes introducir un comando valido");
                                 throw new ComandaExeption(ComandaExeption.OPERACION_INCORRECTA);
 
                         }
