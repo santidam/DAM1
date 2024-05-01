@@ -1,0 +1,3 @@
+104,4,50,disponible
+105,2,60,disponible
+106,2,40,disponible

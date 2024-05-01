@@ -1,0 +1,2 @@
+room 100 1 llitdoble
+worker 12345678 santi neteja,spa
